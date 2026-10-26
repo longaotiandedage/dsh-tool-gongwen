@@ -1,0 +1,8 @@
+node_modules/
+*.log
+.pv.*
+.preview.*
+.dsh-office.*
+*.tmp
+.DS_Store
+Thumbs.db

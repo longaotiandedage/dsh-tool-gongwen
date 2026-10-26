@@ -1,0 +1,41 @@
+{
+  "name": "dsh-tool-gongwen",
+  "version": "0.1.0",
+  "description": "DSH 插件：按 GB/T 9704—2012《党政机关公文格式》生成中文公文 DOCX / PDF，并校验版面",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/**/*.js",
+    "assets/**",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "gongwen",
+    "gb-t-9704",
+    "docx",
+    "chinese-official-document"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*",
+    "@deepseek-ai/dsh-tools": "*"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-tools": {
+      "optional": true
+    }
+  }
+}

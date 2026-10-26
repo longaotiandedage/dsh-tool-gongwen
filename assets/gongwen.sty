@@ -1,0 +1,164 @@
+%% gongwen.sty — GB/T 9704—2012 党政机关公文格式
+%% 用法：
+%%   \documentclass[UTF8, fontset=none, twoside]{ctexart}
+%%   \usepackage{gongwen}
+%%
+%% 说明：必须在 ctex 之后加载。字体缺失时自动降级，并在编译日志里 \typeout 提示。
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{gongwen}[2026/10/26 v1.0 GB/T 9704-2012 official document layout]
+
+% ---------------------------------------------------------------- 页面
+% 版心 156 × 225 mm：210-28-26=156，297-37-35=225
+\RequirePackage[a4paper, top=37mm, bottom=35mm, left=28mm, right=26mm,
+                headheight=0pt, headsep=0pt, footskip=8mm]{geometry}
+\RequirePackage{xcolor}
+\RequirePackage{fancyhdr}
+
+\definecolor{gwred}{RGB}{212,0,0}
+
+% ---------------------------------------------------------------- 字体
+\newcommand{\gw@info}[1]{\typeout{gongwen: #1}}
+
+% 正文：仿宋（三级标题依赖它的合成粗体）
+\IfFontExistsTF{FangSong}{%
+  \setCJKmainfont{FangSong}[BoldFont=FangSong, BoldFeatures={FakeBold=2.5}]%
+  \gw@info{正文 = FangSong（仿宋）}%
+}{%
+  \IfFontExistsTF{FandolSong}{%
+    \setCJKmainfont{FandolSong}[BoldFont=FandolSong, BoldFeatures={FakeBold=2.5}]%
+    \gw@info{正文 = FandolSong（替代仿宋）}%
+  }{%
+    \setCJKmainfont{Noto Serif CJK SC}[BoldFont=Noto Serif CJK SC,
+      BoldFeatures={FakeBold=2.5}]%
+    \gw@info{正文 = Noto Serif CJK SC（替代仿宋）}%
+  }%
+}
+
+% 一级标题：黑体
+\IfFontExistsTF{SimHei}{%
+  \setCJKfamilyfont{gwhei}{SimHei}%
+}{%
+  \IfFontExistsTF{FandolHei}{%
+    \setCJKfamilyfont{gwhei}{FandolHei}%
+  }{%
+    \setCJKfamilyfont{gwhei}{Noto Sans CJK SC}%
+  }%
+}
+
+% 二级标题：楷体
+\IfFontExistsTF{KaiTi}{%
+  \setCJKfamilyfont{gwkai}{KaiTi}%
+}{%
+  \IfFontExistsTF{FandolKai}{%
+    \setCJKfamilyfont{gwkai}{FandolKai}%
+  }{%
+    \setCJKfamilyfont{gwkai}{Noto Serif CJK SC}%
+  }%
+}
+
+% 页码：宋体
+\IfFontExistsTF{SimSun}{%
+  \setCJKfamilyfont{gwsong}{SimSun}%
+}{%
+  \IfFontExistsTF{FandolSong}{%
+    \setCJKfamilyfont{gwsong}{FandolSong}%
+  }{%
+    \setCJKfamilyfont{gwsong}{Noto Serif CJK SC}%
+  }%
+}
+
+% 文件标题与发文机关标志：小标宋
+% 方正小标宋简体常缺，依次回退到华文中宋、宋体
+\IfFontExistsTF{FZXiaoBiaoSong-B05S}{%
+  \setCJKfamilyfont{gwbs}{FZXiaoBiaoSong-B05S}%
+  \gw@info{标题 = 方正小标宋}%
+}{%
+  \IfFontExistsTF{STZhongsong}{%
+    \setCJKfamilyfont{gwbs}{STZhongsong}%
+    \gw@info{标题 = 华文中宋（替代方正小标宋）}%
+  }{%
+    \IfFontExistsTF{STSong}{%
+      \setCJKfamilyfont{gwbs}{STSong}%
+      \gw@info{标题 = 华文宋体（替代方正小标宋）}%
+    }{%
+      \setCJKfamilyfont{gwbs}{FandolSong}%
+      \gw@info{标题 = FandolSong（替代方正小标宋）}%
+    }%
+  }%
+}
+
+\newcommand{\gwhei}{\CJKfamily{gwhei}}
+\newcommand{\gwkai}{\CJKfamily{gwkai}}
+\newcommand{\gwsong}{\CJKfamily{gwsong}}
+\newcommand{\gwbs}{\CJKfamily{gwbs}}
+
+% ---------------------------------------------------------------- 段排
+% 正文三号（16 pt），固定行距 28 磅，首行缩进 2 字
+\AtBeginDocument{%
+  \fontsize{16pt}{28pt}\selectfont
+  \setlength{\parindent}{2em}%
+  \setlength{\parskip}{0pt}%
+}
+
+% ---------------------------------------------------------------- 页码
+% 4 号宋体，单页居右、双页居左，两侧一字线
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[RO]{\gwsong\fontsize{14pt}{16pt}\selectfont —\ \thepage\ —}
+\fancyfoot[LE]{\gwsong\fontsize{14pt}{16pt}\selectfont —\ \thepage\ —}
+
+% ---------------------------------------------------------------- 版头
+% 发文机关标志：红色小标宋，居中
+\newcommand{\gworg}[1]{%
+  \par\begin{center}%
+    {\gwbs\fontsize{36pt}{44pt}\selectfont\color{gwred}#1\par}%
+  \end{center}%
+}
+
+% 发文字号 + 红色分隔线
+% 注意：分隔线必须 \noindent，否则继承 2 字首行缩进而溢出
+\newcommand{\gwdocno}[1]{%
+  \par\vspace{2pt}%
+  \begin{center}{\gwsong#1\par}\end{center}%
+  \vspace{-2pt}%
+  \noindent{\color{gwred}\rule{\textwidth}{1.5pt}}%
+  \vspace{14pt}\par
+}
+
+% ---------------------------------------------------------------- 标题
+\newcommand{\gwtitle}[1]{%
+  \par\vspace{4pt}%
+  \begin{center}%
+    {\gwbs\fontsize{22pt}{34pt}\selectfont #1\par}%
+  \end{center}%
+  \vspace{8pt}%
+}
+
+% ---------------------------------------------------------------- 正文
+% 主送机关：顶格
+\newcommand{\gwto}[1]{\noindent#1\par}
+% 正文段落：首行缩进 2 字
+\newcommand{\gwbody}[1]{\par#1\par}
+% 一级标题：3 号黑体
+\newcommand{\gwhone}[1]{\par{\gwhei #1}\par}
+% 二级标题：3 号楷体
+\newcommand{\gwhtwo}[1]{\par{\gwkai #1}\par}
+% 三级标题：3 号仿宋加粗（合成粗体）
+\newcommand{\gwhthree}[1]{\par{\bfseries #1}\par}
+
+% ---------------------------------------------------------------- 附件
+% 附件说明：首行左空二字，续行左空六字
+\newcommand{\gwattach}[1]{\par\vspace{16pt}\noindent\hspace*{2em}#1\par}
+\newcommand{\gwattachcont}[1]{\par\noindent\hspace*{6em}#1\par}
+
+% ---------------------------------------------------------------- 落款
+% 发文机关署名右空二字，成文日期右空四字；与附件同页
+\newcommand{\gwsign}[2]{%
+  \vspace{24pt}%
+  \noindent\hfill #1\hspace*{2em}\par
+  \vspace{4pt}%
+  \noindent\hfill #2\hspace*{4em}\par
+}
+
+\endinput
