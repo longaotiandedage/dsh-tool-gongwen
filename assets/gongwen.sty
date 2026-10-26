@@ -70,18 +70,18 @@
 % 文件标题与发文机关标志：小标宋
 % 方正小标宋简体常缺，依次回退到华文中宋、宋体
 \IfFontExistsTF{FZXiaoBiaoSong-B05S}{%
-  \setCJKfamilyfont{gwbs}{FZXiaoBiaoSong-B05S}%
+  \setCJKfamilyfont{gwbs}{FZXiaoBiaoSong-B05S}[BoldFont=FZXiaoBiaoSong-B05S, BoldFeatures={FakeBold=3}]%
   \gw@info{标题 = 方正小标宋}%
 }{%
   \IfFontExistsTF{STZhongsong}{%
-    \setCJKfamilyfont{gwbs}{STZhongsong}%
+    \setCJKfamilyfont{gwbs}{STZhongsong}[BoldFont=STZhongsong, BoldFeatures={FakeBold=3}]%
     \gw@info{标题 = 华文中宋（替代方正小标宋）}%
   }{%
     \IfFontExistsTF{STSong}{%
-      \setCJKfamilyfont{gwbs}{STSong}%
+      \setCJKfamilyfont{gwbs}{STSong}[BoldFont=STSong, BoldFeatures={FakeBold=3}]%
       \gw@info{标题 = 华文宋体（替代方正小标宋）}%
     }{%
-      \setCJKfamilyfont{gwbs}{FandolSong}%
+      \setCJKfamilyfont{gwbs}{FandolSong}[BoldFont=FandolSong, BoldFeatures={FakeBold=3}]%
       \gw@info{标题 = FandolSong（替代方正小标宋）}%
     }%
   }%

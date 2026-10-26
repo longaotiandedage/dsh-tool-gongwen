@@ -8,8 +8,9 @@ import path from "node:path";
 import { makeDocx } from "../lib/docx.js";
 
 export const SPEC = {
-  org: "综合办公室文件",
-  docno: "综字〔2026〕7 号",
+  org: "大肥鱼俱乐部文件",
+  orgBold: true,
+  docno: "大肥鱼字〔2026〕7 号",
   title: "关于规范文档输出格式的通知",
   to: "各部门、各项目组：",
   blocks: [
@@ -51,12 +52,12 @@ export const SPEC = {
     },
     {
       type: "body",
-      text: "已有模板不符合上述要求的，应于本月底前完成修订。格式核查中遇到技术问题，及时与综合办公室联系。",
+      text: "已有模板不符合上述要求的，应于本月底前完成修订。格式核查中遇到技术问题，及时与大肥鱼俱乐部联系。",
     },
     { type: "body", text: "本通知自印发之日起执行。" },
   ],
   attachments: ["1. 公文格式自查表", "2. 版式参数对照表"],
-  signOrg: "综合办公室",
+  signOrg: "大肥鱼俱乐部",
   signDate: "2026年10月26日",
 };
 
