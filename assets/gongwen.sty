@@ -148,9 +148,10 @@
 \newcommand{\gwhthree}[1]{\par{\bfseries #1}\par}
 
 % ---------------------------------------------------------------- 附件
-% 附件说明：首行左空二字，续行左空六字
+% 附件说明：首行左空二字；续行对齐到「1.」所在的第 5 字。
+% 「附件：」占 3 个字，故 2 + 3 = 5 字；写成 6 字会明显偏右。
 \newcommand{\gwattach}[1]{\par\vspace{16pt}\noindent\hspace*{2em}#1\par}
-\newcommand{\gwattachcont}[1]{\par\noindent\hspace*{6em}#1\par}
+\newcommand{\gwattachcont}[1]{\par\noindent\hspace*{5em}#1\par}
 
 % ---------------------------------------------------------------- 落款
 % 落款：成文日期右空二字；署名居中于日期之上。
