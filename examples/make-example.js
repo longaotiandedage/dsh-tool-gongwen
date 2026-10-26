@@ -9,8 +9,7 @@ import { makeDocx } from "../lib/docx.js";
 
 export const SPEC = {
   org: "大肥鱼俱乐部文件",
-  orgBold: true,
-  docno: "大肥鱼字〔2026〕7 号",
+  docno: "肥字〔2026〕7 号",
   title: "关于规范文档输出格式的通知",
   to: "各部门、各项目组：",
   blocks: [
