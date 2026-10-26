@@ -1,7 +1,7 @@
 {
   "name": "dsh-tool-gongwen",
   "version": "0.1.0",
-  "description": "DSH 插件：按 GB/T 9704—2012《党政机关公文格式》生成中文公文 DOCX / PDF，并校验版面",
+  "description": "DSH 插件：按 GB/T 9704—2012《党政机关公文格式》生成与校验中文公文（DOCX / PDF），纯 JS 实现，零外部依赖",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -37,5 +37,14 @@
     "@deepseek-ai/dsh-tools": {
       "optional": true
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/longaotiandedage/dsh-tool-gongwen.git"
+  },
+  "homepage": "https://github.com/longaotiandedage/dsh-tool-gongwen#readme",
+  "bugs": {
+    "url": "https://github.com/longaotiandedage/dsh-tool-gongwen/issues"
+  },
+  "author": "longaotiandedage"
 }

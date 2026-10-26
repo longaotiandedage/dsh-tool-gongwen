@@ -1,5 +1,7 @@
 # 关于公文格式 DSH 插件的项目说明
 
+![示例：按 GB/T 9704—2012 排版的公文首页](docs/preview.png)
+
 ## 一、项目概况
 
 中文公文的版式由 GB/T 9704—2012《党政机关公文格式》规定，参数琐碎且相互牵连：
@@ -19,23 +21,35 @@
 
 ## 三、安装与加载
 
-本插件遵循 cordis 插件规范，导出 `name`、`Config`、`inject`、`apply` 四项。
-安装方式有二。
+### （一）前置条件
 
-其一，自 npm 安装（发布后可用）：
+| 项目 | 要求 | 说明 |
+|---|---|---|
+| DSH | 0.2.x | 插件依 cordis 规范加载 |
+| Node.js | 20 及以上 | DSH 自带运行时即可 |
+| TeX Live | 可选 | 仅 `gongwen_pdf` 需要；不装只影响 PDF 工具 |
+| 中文字体 | 仿宋、黑体、楷体、宋体 | Windows 自带；macOS 与 Linux 会降级 |
+
+DOCX 与校验两项功能不依赖任何外部程序，装完即可用。
+
+### （二）安装步骤
+
+自本仓库安装时，执行以下四步。
+
+其一，取得源码并放到固定位置：
+
+```
+git clone git@github.com:longaotiandedage/dsh-tool-gongwen.git ~/dsh-tool-gongwen
+```
+
+其二，进入 profile 目录，以本地路径安装：
 
 ```
 cd ~/.dsh/profiles/desktop
-pnpm add dsh-tool-gongwen
+pnpm add "file:$HOME/dsh-tool-gongwen"
 ```
 
-其二，自本地目录安装，适用于开发调试：
-
-```
-pnpm add "file:/path/to/dsh-tool-gongwen"
-```
-
-安装后须在 profile 的 `package.json` 中登记模块名：
+其三，在该目录的 `package.json` 中登记模块名。`dsh.profile.bundles` 数组里追加一项：
 
 ```json
 {
@@ -49,7 +63,24 @@ pnpm add "file:/path/to/dsh-tool-gongwen"
 }
 ```
 
-重启 DSH，或等待热加载生效。
+其四，重启 DSH。若已开启热加载，保存后等待片刻亦可。
+
+若日后发布至 npm，则第二步改为 `pnpm add dsh-tool-gongwen`，其余不变。
+
+### （三）验证安装
+
+重启后在会话中提出如下要求，若工具可用即安装成功：
+
+```
+用 gongwen_docx 生成一份关于××的通知，输出到 test.docx
+```
+
+生成后用 `gongwen_check` 校验，应返回"符合 GB/T 9704—2012"。
+
+### （四）卸载
+
+从 `dsh.profile.bundles` 中删除 `"dsh-tool-gongwen"`，再执行
+`pnpm remove dsh-tool-gongwen`，重启即可。插件不写入任何全局路径。
 
 ## 四、使用方法
 
