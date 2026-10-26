@@ -153,12 +153,17 @@
 \newcommand{\gwattachcont}[1]{\par\noindent\hspace*{6em}#1\par}
 
 % ---------------------------------------------------------------- 落款
-% 发文机关署名右空二字，成文日期右空四字；与附件同页
+% 落款：成文日期右空二字；署名居中于日期之上。
+% 依据 GB/T 9704—2012 7.3.5.2：成文日期长于署名时，日期右空二字，
+% 并相应增加署名右空字数——视觉结果就是署名相对日期居中。
 \newcommand{\gwsign}[2]{%
   \vspace{24pt}%
-  \noindent\hfill #1\hspace*{2em}\par
-  \vspace{4pt}%
-  \noindent\hfill #2\hspace*{4em}\par
+  \noindent\hfill
+  \begin{tabular}{@{}c@{}}
+    #1\\[2pt]
+    #2
+  \end{tabular}%
+  \hspace*{2em}\par
 }
 
 \endinput
