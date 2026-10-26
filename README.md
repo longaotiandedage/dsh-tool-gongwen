@@ -42,8 +42,12 @@ DOCX 与校验两项功能不依赖任何外部程序，装完即可用。
 其一，取得源码并放到固定位置：
 
 ```
-git clone git@github.com:longaotiandedage/dsh-tool-gongwen.git ~/dsh-tool-gongwen
+git clone https://github.com/longaotiandedage/dsh-tool-gongwen.git ~/dsh-tool-gongwen
 ```
+
+若网络到 github.com 的 git 协议不稳定，可改用网页下载：打开仓库页，点绿色
+**Code** 按钮选 **Download ZIP**，解压后重命名为 `dsh-tool-gongwen` 放在用户主目录下。
+两者内容一致，后续步骤相同。
 
 其二，进入 profile 目录，以本地路径安装：
 
