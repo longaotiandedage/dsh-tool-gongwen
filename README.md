@@ -35,9 +35,36 @@
 
 DOCX 与校验两项功能不依赖任何外部程序，装完即可用。
 
-### （二）安装步骤
+### （二）一键安装
 
-自本仓库安装时，执行以下四步。
+取得源码后，仓库根目录有两个批处理文件：
+
+| 文件 | 作用 |
+|---|---|
+| `install.bat` | 安装：装依赖、登记 bundle、提示重启 |
+| `uninstall.bat` | 卸载：移除 bundle 登记、卸载依赖 |
+
+双击 `install.bat` 即可。脚本会自动定位 DSH 目录、profile 与自带 pnpm，
+先备份 profile 的 `package.json` 与 `pnpm-lock.yaml`，再执行安装。
+窗口中会逐条打印每一步结果，完成后提示重启 DSH。
+
+若只想先看它打算做什么，可在命令行执行：
+
+```
+node install.mjs --dry-run
+```
+
+预演模式只检查环境并打印步骤，不改任何文件。
+
+安装失败时脚本会自动还原 `package.json`；也可手动回滚最近一次改动：
+
+```
+node install.mjs --rollback
+```
+
+### （三）手动安装
+
+不想用脚本时，按四步操作。
 
 其一，取得源码并放到固定位置：
 
@@ -76,7 +103,7 @@ pnpm add "file:$HOME/dsh-tool-gongwen"
 
 若日后发布至 npm，则第二步改为 `pnpm add dsh-tool-gongwen`，其余不变。
 
-### （三）挂载机制说明
+### （四）挂载机制说明
 
 DSH 的 bundle 不会因为"装进 node_modules"就自动加载，还需两处配合。本仓库已自带，
 使用者无需手工创建，但了解其原理有助于排查问题。
@@ -99,7 +126,7 @@ DSH 启动时按 bundle 层栈依次叠加各插件的 patch，`insert` 条目�
 若只做了 `pnpm add` 而漏了 `bundles` 登记，插件不会加载，且不报错——这是最容易
 踩空的一步。
 
-### （四）验证安装
+### （五）验证安装
 
 重启后在会话中提出如下要求，若工具可用即安装成功：
 
@@ -115,10 +142,16 @@ DSH 启动时按 bundle 层栈依次叠加各插件的 patch，`insert` 条目�
 node test/selftest.mjs
 ```
 
-### （五）卸载
+### （六）卸载
 
-从 `dsh.profile.bundles` 中删除 `"dsh-tool-gongwen"`，再执行
-`pnpm remove dsh-tool-gongwen`，重启即可。插件不写入任何全局路径。
+双击 `uninstall.bat`，或执行 `node uninstall.mjs`。脚本会从
+`dsh.profile.bundles` 中移除登记、卸载依赖，然后提示重启。
+
+手动方式：从 `dsh.profile.bundles` 中删除 `"dsh-tool-gongwen"`，执行
+`pnpm remove dsh-tool-gongwen`，重启即可。
+
+插件不写入任何全局路径。安装时在 profile 下生成的 `.gongwen-backup-*` 备份目录
+可由使用者自行删除。
 
 ## 四、使用方法
 
