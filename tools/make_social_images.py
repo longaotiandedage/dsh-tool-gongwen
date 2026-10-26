@@ -71,13 +71,17 @@ def compose(page: Image.Image, size: tuple, out_path: pathlib.Path):
     return canvas.size, y + page.height
 
 
-def make_cover(pdf_path: pathlib.Path, out_path: pathlib.Path):
-    """版头特写：裁出红色机关标志与分隔线，放大后居中，作封面。"""
+def make_cover(pdf_path: pathlib.Path, out_path: pathlib.Path,
+               top_mm: float = 18, bottom_mm: float = 95):
+    """版头特写：裁出机关标志或标题区，放大后居中，作封面。
+
+    裁切范围按文档而定：有红色版头的取 18–95 mm；
+    无版头、仅标题的取 25–62 mm 左右。
+    """
     doc = fitz.open(str(pdf_path))
     page = doc[0]
-    # PDF 坐标：版头在页面顶部约 25–95 mm 处
     mm = 72 / 25.4
-    clip = fitz.Rect(0, 18 * mm, page.rect.width, 95 * mm)
+    clip = fitz.Rect(0, top_mm * mm, page.rect.width, bottom_mm * mm)
     pix = page.get_pixmap(dpi=300, clip=clip)
     header = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
 
@@ -110,8 +114,15 @@ def make_cover(pdf_path: pathlib.Path, out_path: pathlib.Path):
 
 
 def main():
-    pdf = pathlib.Path(sys.argv[1])
-    root = pathlib.Path(sys.argv[2])
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    opts = {}
+    for a in sys.argv[1:]:
+        if a.startswith("--cover-top="):
+            opts["top"] = float(a.split("=", 1)[1])
+        elif a.startswith("--cover-bottom="):
+            opts["bottom"] = float(a.split("=", 1)[1])
+    pdf = pathlib.Path(args[0])
+    root = pathlib.Path(args[1])
     root.mkdir(parents=True, exist_ok=True)
 
     doc, raw = render_raw(pdf, root / "raw")
@@ -127,7 +138,9 @@ def main():
             sz, bottom_px = compose(src, size, out)
             print(f"  {out.name}  {sz[0]}x{sz[1]}  页面底边 y={bottom_px}")
 
-    cov = make_cover(pdf, root / "cover" / "00.png") if (root / "cover").mkdir(exist_ok=True) is None else None
+    (root / "cover").mkdir(exist_ok=True)
+    cov = make_cover(pdf, root / "cover" / "00.png",
+                     opts.get("top", 18), opts.get("bottom", 95))
     print(f"\n封面 cover/00.png  {cov[0]}x{cov[1]}")
 
 
