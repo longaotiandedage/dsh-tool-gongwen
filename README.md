@@ -11,6 +11,9 @@
 本插件把上述机械部分固定为代码，由三个原生工具承担。内容组织、文种选择与措辞规范
 仍由使用者判断，插件不作干预。
 
+三个工具已在 DSH 桌面版中完成真实加载验证：会话内直接调用可生成 DOCX 与 PDF，
+回读校验十一项全部符合国标。
+
 ## 二、功能构成
 
 | 工具 | 作用 | 外部依赖 |
@@ -56,6 +59,8 @@ pnpm add "file:$HOME/dsh-tool-gongwen"
   "dsh": {
     "profile": {
       "bundles": [
+        "@deepseek-ai/dsh-base",
+        "dsh-whale-widget",
         "dsh-tool-gongwen"
       ]
     }
@@ -67,7 +72,30 @@ pnpm add "file:$HOME/dsh-tool-gongwen"
 
 若日后发布至 npm，则第二步改为 `pnpm add dsh-tool-gongwen`，其余不变。
 
-### （三）验证安装
+### （三）挂载机制说明
+
+DSH 的 bundle 不会因为"装进 node_modules"就自动加载，还需两处配合。本仓库已自带，
+使用者无需手工创建，但了解其原理有助于排查问题。
+
+其一，包内声明挂载文件：
+
+```json
+"dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+```
+
+其二，该 patch 用 `insert` 把自己插入 profile 的配置树：
+
+```yaml
+- insert:
+    - id: dsh-tool-gongwen
+      name: dsh-tool-gongwen
+```
+
+DSH 启动时按 bundle 层栈依次叠加各插件的 patch，`insert` 条目即被实例化。
+若只做了 `pnpm add` 而漏了 `bundles` 登记，插件不会加载，且不报错——这是最容易
+踩空的一步。
+
+### （四）验证安装
 
 重启后在会话中提出如下要求，若工具可用即安装成功：
 
@@ -77,7 +105,13 @@ pnpm add "file:$HOME/dsh-tool-gongwen"
 
 生成后用 `gongwen_check` 校验，应返回"符合 GB/T 9704—2012"。
 
-### （四）卸载
+亦可直接运行仓库自带的自检，不依赖 DSH 运行时：
+
+```
+node test/selftest.mjs
+```
+
+### （五）卸载
 
 从 `dsh.profile.bundles` 中删除 `"dsh-tool-gongwen"`，再执行
 `pnpm remove dsh-tool-gongwen`，重启即可。插件不写入任何全局路径。
