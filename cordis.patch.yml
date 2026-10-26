@@ -1,0 +1,16 @@
+# ============================================================================
+# dsh-tool-gongwen —— DSH bundle patch
+# ============================================================================
+# 这是插件的挂载声明。DSH 启动时按 bundle 层栈叠加各插件 patch，
+# 本文件把公文工具插入 profile 的配置树。
+#
+# 安装（本地开发）：
+#   cd ~/.dsh/profiles/desktop
+#   pnpm add "file:<本目录绝对路径>"
+# 然后在 profile 的 package.json 里，把 "dsh-tool-gongwen" 加进
+# dsh.profile.bundles 数组，重启 DSH。
+# ============================================================================
+
+- insert:
+    - id: dsh-tool-gongwen
+      name: dsh-tool-gongwen

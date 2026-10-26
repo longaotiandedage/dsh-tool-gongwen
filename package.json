@@ -12,7 +12,8 @@
     "lib/**/*.js",
     "assets/**",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "cordis.patch.yml"
   ],
   "keywords": [
     "dsh",
@@ -46,5 +47,10 @@
   "bugs": {
     "url": "https://github.com/longaotiandedage/dsh-tool-gongwen/issues"
   },
-  "author": "longaotiandedage"
+  "author": "longaotiandedage",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
 }
